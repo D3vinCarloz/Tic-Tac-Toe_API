@@ -1,0 +1,237 @@
+:root {
+    --neon-blue: #00BFFF;
+    --neon-red: #FF073A;
+    --background-color: #1a1a2e;
+    --dark-glass: rgba(25, 25, 50, 0.65);
+    --grid-background: rgba(15, 15, 30, 0.7);
+    --font-family: 'Poppins', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    color: white;
+    background-color: var(--background-color);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    transition: background-color 1s ease-in-out;
+}
+
+#bodydiv {
+    display: flex;
+}
+
+#weather-effects-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* --- CSS Animated Backgrounds --- */
+body::before,
+body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+/* --- Night Mode & Moon --- */
+@keyframes twinkle {
+    0% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.5; }
+}
+
+body.is-night::before {
+    background-image:
+        radial-gradient(1px 1px at 20% 20%, white, transparent),
+        radial-gradient(1px 1px at 80% 10%, white, transparent),
+        radial-gradient(1px 1px at 50% 70%, white, transparent),
+        radial-gradient(2px 2px at 30% 90%, white, transparent),
+        radial-gradient(2px 2px at 90% 40%, white, transparent),
+        radial-gradient(2px 2px at 10% 50%, white, transparent);
+    animation: twinkle 10s infinite;
+    opacity: 1;
+}
+
+@keyframes moon-glow {
+    0%, 100% { box-shadow: 0 0 40px 15px rgba(245, 243, 206, 0.7), 0 0 80px 30px rgba(119, 119, 119, 0.5); }
+    50% { box-shadow: 0 0 60px 20px rgba(245, 243, 206, 0.9), 0 0 100px 40px rgba(119, 119, 119, 0.7); }
+}
+
+body.weather-clear.is-night::after {
+    content: '';
+    position: absolute;
+    background: #f5f3ce;
+    width: 200px;
+    height: 200px;
+    top: 50px;
+    right: 50px;
+    left: auto;
+    border-radius: 50%;
+    animation: moon-glow 15s infinite ease-in-out;
+    opacity: 1;
+}
+
+/* --- Sunny Day --- */
+@keyframes sun-glow {
+    0%, 100% { box-shadow: 0 0 60px 30px #FFD700, 0 0 100px 60px #FFA500; }
+    50% { box-shadow: 0 0 80px 40px #FFD700, 0 0 120px 70px #FFA500; }
+}
+
+/* [CRITICAL FIX] Added :not(.is-night) to prevent sun from showing at night */
+body.weather-clear:not(.is-night)::before {
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, rgba(255, 165, 0, 0) 70%);
+    width: 300px;
+    height: 300px;
+    top: -50px;
+    left: -50px;
+    border-radius: 50%;
+    animation: sun-glow 10s infinite ease-in-out;
+    opacity: 1;
+}
+
+/* --- Clouds (Day and Night) --- */
+@keyframes drift {
+    from { transform: translateX(-300px); }
+    to { transform: translateX(100vw); }
+}
+
+body.weather-clouds::before,
+body.weather-clouds::after {
+    content: '';
+    position: absolute;
+    width: 250px;
+    height: 80px;
+    border-radius: 125px;
+    animation: drift 60s infinite linear;
+    opacity: 0;
+}
+
+body.weather-clouds::before {
+    background: #d3d3d3; opacity: 0.6;
+    top: 10%; animation-duration: 60s; animation-delay: -20s;
+}
+
+body.weather-clouds::after {
+    background: #c0c0c0; opacity: 0.5;
+    top: 25%; left: 0; width: 300px; height: 100px;
+    animation-duration: 45s; animation-delay: -5s;
+}
+
+body.weather-clouds.is-night::before { background: #666; }
+body.weather-clouds.is-night::after { background: #555; }
+
+
+/* --- Dynamic JS Effects --- */
+.drop {
+    position: absolute;
+    width: 2px;
+    height: 40px;
+    background: rgba(200, 220, 255, 0.7);
+    animation: rain-fall linear infinite;
+}
+@keyframes rain-fall {
+    from { transform: translateY(-20vh) rotate(-10deg); }
+    to   { transform: translateY(120vh) rotate(-10deg); }
+}
+
+/* ... (The rest of the CSS is unchanged and correct) ... */
+.snowflake {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.9;
+    animation: snow-fall linear infinite;
+}
+@keyframes snow-fall {
+    from { transform: translateY(-20vh) translateX(0); }
+    to   { transform: translateY(120vh) translateX(30px); }
+}
+
+.fog-element {
+    position: absolute;
+    width: 250px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 70%);
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: fog-move 30s ease-in-out infinite alternate;
+}
+@keyframes fog-move {
+    from { transform: translateX(-80px); }
+    to   { transform: translateX(80px); }
+}
+
+h1, h2, h3 { text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue); margin: 0; }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: none; justify-content: center; align-items: center; z-index: 1000; }
+.modal-overlay.show { display: flex; }
+.modal-content { background: var(--dark-glass); border: 2px solid var(--neon-blue); border-radius: 15px; padding: 2rem; width: 90%; max-width: 500px; box-shadow: 0 0 25px var(--neon-blue); backdrop-filter: blur(12px); text-align: center; position: relative; z-index: 1001; }
+.modal-content ul { text-align: left; list-style-type: '✓ '; padding-left: 20px; }
+.location-setup { margin-bottom: 1.5rem; text-align: center; }
+.location-setup label { display: block; margin-bottom: 0.5rem; font-size: 1.1rem; }
+.location-options { display: flex; justify-content: center; gap: 10px; align-items: stretch; }
+#use-location-btn { padding: 10px 15px; border: 1px solid var(--neon-blue); color: var(--neon-blue); flex-grow: 1; }
+#city-select { flex-grow: 1; padding: 0 10px; border: 1px solid var(--neon-blue); border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: white; font-family: var(--font-family); }
+#city-select option { background-color: var(--background-color); color: white; }
+.player-input { margin-top: 1rem; }
+.player-input input { width: 80%; padding: 10px; border: 1px solid var(--neon-red); border-radius: 5px; background: rgba(255, 255, 255, 0.1); color: white; margin-bottom: 10px; }
+.error-text { color: var(--neon-red); min-height: 20px; margin-top: 10px; font-weight: bold; }
+#main-wrapper { display: flex; align-items: flex-start; justify-content: center; gap: 30px; width: 100%; padding: 20px; }
+#game-container { display: flex; flex-direction: column; align-items: center; gap: 15px; position: relative; z-index: 2; }
+#weather-info { position: relative; width: 90%; max-width: 400px; background: var(--dark-glass); padding: 0.5rem 1rem; border-radius: 15px; border: 1px solid var(--neon-blue); backdrop-filter: blur(12px); font-size: 0.9rem; text-align: left; box-shadow: 0 0 15px rgba(0, 191, 255, 0.5); order: -1; transition: opacity 0.5s ease; }
+#weather-info.placeholder #weather-icon, #weather-info.placeholder #weather-details, #weather-info.placeholder #weather-time { display: none; }
+#weather-info.placeholder #weather-location { flex-grow: 1; text-align: center; }
+.weather-main { display: flex; align-items: center; }
+#weather-icon { width: 40px; height: 40px; margin-right: 10px; }
+#weather-location { font-size: 1rem; font-weight: bold; flex-grow: 1; }
+#weather-time { font-size: 1rem; font-weight: bold; text-align: right; }
+#weather-details { font-size: 0.8rem; line-height: 1.4; text-align: center; padding-top: 5px; border-top: 1px solid rgba(0, 191, 255, 0.3); margin-top: 5px; }
+.grid-container { background: var(--grid-background); padding: 20px; border-radius: 15px; backdrop-filter: blur(5px); box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); }
+.game-grid { position: relative; display: grid; grid-template-columns: repeat(3, 100px); grid-gap: 10px; }
+.cell { width: 100px; height: 100px; background: var(--dark-glass); border: 2px solid var(--neon-blue); backdrop-filter: blur(8px); border-radius: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 3.5rem; font-weight: bold; transition: background 0.3s ease, box-shadow 0.3s ease; }
+.cell:hover { background: rgba(0, 191, 255, 0.3); box-shadow: 0 0 15px var(--neon-blue); }
+.cell.x { color: var(--neon-red); text-shadow: 0 0 10px var(--neon-red); }
+.cell.o { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+#status-text { font-size: 1.5rem; font-weight: bold; }
+.player-symbol { display: inline-block; margin-left: 10px; font-size: 1.5rem; }
+#strike-line { position: absolute; background-color: var(--neon-red); height: 8px; border-radius: 5px; box-shadow: 0 0 10px #fff, 0 0 20px var(--neon-red), 0 0 30px var(--neon-red); transform-origin: top left; transition: width 0.5s ease-in-out, transform 0.5s ease-in-out; width: 0; z-index: 10; }
+.strike-row-1 { top: 48px; left: 10px; }
+.strike-row-2 { top: 158px; left: 10px; }
+.strike-row-3 { top: 268px; left: 10px; }
+.strike-col-1 { top: 10px; left: 52px; transform: rotate(90deg); }
+.strike-col-2 { top: 10px; left: 162px; transform: rotate(90deg); }
+.strike-col-3 { top: 10px; left: 272px; transform: rotate(90deg); }
+.strike-diag-1 { top: 12px; left: 15px; transform: rotate(45deg); }
+.strike-diag-2 { top: 15px; left: 305px; transform: rotate(135deg); }
+button { font-family: 'Orbitron', sans-serif; padding: 10px 20px; font-size: 1rem; cursor: pointer; background: transparent; border: 2px solid var(--neon-red); color: var(--neon-red); border-radius: 5px; transition: all 0.3s ease; margin-top: 1rem; }
+button:hover { background: var(--neon-red); color: white; box-shadow: 0 0 20px var(--neon-red); }
+.answer-buttons button, .topic-buttons button { display: block; width: 100%; margin: 10px 0; border-color: var(--neon-blue); color: var(--neon-blue); }
+.answer-buttons button:hover, .topic-buttons button:hover { background: var(--neon-blue); color: white; box-shadow: 0 0 20px var(--neon-blue); }
+#live-qa-history-container { width: 350px; height: 600px; background: var(--dark-glass); border: 1px solid var(--neon-blue); border-radius: 15px; padding: 1rem; backdrop-filter: blur(12px); display: flex; flex-direction: column; }
+#live-qa-history { flex-grow: 1; overflow-y: auto; text-align: left; }
+.winner-content { max-width: 600px; }
+.winner-name { font-size: 1.8rem; font-weight: bold; color: var(--neon-red); text-shadow: 0 0 10px var(--neon-red); }
+.qa-history { max-height: 250px; overflow-y: auto; text-align: left; padding: 10px; border: 1px solid var(--neon-blue); border-radius: 10px; margin-top: 1rem; }
+.qa-history p, #live-qa-history p { margin: 2px 0; }
+.qa-item { background: rgba(0, 0, 0, 0.2); border-radius: 5px; padding: 10px; margin-bottom: 10px; }
+.qa-result.correct { color: #32CD32; font-weight: bold; }
+.qa-result.incorrect { color: var(--neon-red); font-weight: bold; }
+.hidden { display: none; }
+@media (max-width: 900px) { #main-wrapper { flex-direction: column; align-items: center; } #live-qa-history-container { width: 90%; max-width: 500px; height: 250px; margin-top: 20px; } }

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="weather-effects-container"></div>
+
+    <div id="bodydiv">
+        <div id="rules-modal" class="modal-overlay show">
+            <div class="modal-content">
+                <h2>Welcome to Quiz Tac Toe!</h2>
+                <p><strong>The Rules:</strong></p>
+                <ul>
+                    <li>To place your mark, you must answer a trivia question correctly.</li>
+                    <li>If you answer wrong, your turn is skipped.</li>
+                    <li>The first to get 3 marks in a row wins!</li>
+                </ul>
+                <button id="rules-ok-btn">OK, Got It!</button>
+            </div>
+        </div>
+
+        <div id="setup-modal" class="modal-overlay">
+            <div class="modal-content">
+                <h2>Player & Weather Setup</h2>
+                <div class="location-setup">
+                    <label for="city-select">First, Choose the Weather Theme:</label>
+                    <div class="location-options">
+                        <button id="use-location-btn">Use My Location</button>
+                        <select id="city-select">
+                            <option value="" disabled selected>Or Select a City</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="player-input">
+                    <input type="text" id="player1-name" placeholder="Enter Player 1 (X) Name" value="Player 1">
+                    <input type="text" id="player2-name" placeholder="Enter Player 2 (O) Name" value="Player 2">
+                </div>
+                <p id="name-error" class="error-text"></p>
+                <button id="start-game-btn">Start Game</button>
+            </div>
+        </div>
+        
+        <div id="topic-modal" class="modal-overlay">
+            <div class="modal-content">
+                <h2>Choose a Question Topic</h2>
+                <div class="topic-buttons">
+                    <button class="topic-btn" data-category="21">Sports</button>
+                    <button class="topic-btn" data-category="11">Movies</button>
+                    <button class="topic-btn" data-category="12">Music</button>
+                    <button class="topic-btn" data-category="9">General Knowledge</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="question-modal" class="modal-overlay">
+            <div class="modal-content">
+                <h3 id="question-text">Question goes here...</h3>
+                <div id="answer-buttons" class="answer-buttons"></div>
+            </div>
+        </div>
+
+        <div id="winner-modal" class="modal-overlay">
+            <div class="modal-content winner-content">
+                <h2>Congratulations!</h2>
+                <p id="winner-text" class="winner-name"></p>
+                <h3>Round Summary</h3>
+                <div id="qa-history" class="qa-history">
+                    </div>
+                <button id="play-again-btn">Play Again</button>
+            </div>
+        </div>
+
+        <div id="custom-alert-modal" class="modal-overlay">
+            <div class="modal-content">
+                <p id="alert-message"></p>
+                <button id="alert-ok-btn">OK</button>
+            </div>
+        </div>
+
+        <div id="main-wrapper" class="hidden">
+            <div id="game-container">
+                <div id="weather-info" class="placeholder">
+                     <div class="weather-main">
+                        <img id="weather-icon" src="" alt="">
+                        <span id="weather-location">Select a location...</span>
+                        <span id="weather-time"></span>
+                    </div>
+                    <div id="weather-details"></div>
+                </div>
+                <h1>Quiz Tac Toe</h1>
+                <div id="status-text"></div>
+                <div class="grid-container">
+                    <div class="game-grid">
+                        <div class="cell" data-cell-index="0"></div>
+                        <div class="cell" data-cell-index="1"></div>
+                        <div class="cell" data-cell-index="2"></div>
+                        <div class="cell" data-cell-index="3"></div>
+                        <div class="cell" data-cell-index="4"></div>
+                        <div class="cell" data-cell-index="5"></div>
+                        <div class="cell" data-cell-index="6"></div>
+                        <div class="cell" data-cell-index="7"></div>
+                        <div class="cell" data-cell-index="8"></div>
+                        <div id="strike-line"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="live-qa-history-container">
+                <h3>Round History</h3>
+                <div id="live-qa-history">
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div style="padding: 5px; margin-bottom: 5%; display: flex; flex-direction: row; justify-content: space-around;">
+        <button id="restart-btn">Restart Game</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
